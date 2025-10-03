@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Server } from "http";
 import mongoose from "mongoose";
 import app from "./app";
@@ -22,7 +23,7 @@ const startServer = async () => {
 
 startServer();
 
-process.on("SIGTERM", (error) => {
+process.on("SIGTERM", () => {
   console.log("SIGTERM signal received... Server shutting down..");
   if (server) {
     server.close(() => {
@@ -32,7 +33,7 @@ process.on("SIGTERM", (error) => {
   process.exit(1);
 });
 
-process.on("SIGINT", (error) => {
+process.on("SIGINT", () => {
   console.log("SIGINT signal received... Server shutting down..");
   if (server) {
     server.close(() => {
