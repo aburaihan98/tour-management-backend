@@ -1,7 +1,8 @@
-import { Request, Response } from "express";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { NextFunction, Request, Response } from "express";
 import { User } from "./user.model";
 
-const createUser = async (req: Request, res: Response) => {
+const createUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { name, email } = req.body;
     const user = await User.create({ name, email });
@@ -11,7 +12,7 @@ const createUser = async (req: Request, res: Response) => {
       data: user,
     });
   } catch (error: any) {
-    res.status(500).json({ message: `Internal server error ${error.message}` });
+    next(error);
   }
 };
 
