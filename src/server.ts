@@ -21,3 +21,54 @@ const startServer = async () => {
 };
 
 startServer();
+
+process.on("SIGTERM", (error) => {
+  console.log("SIGTERM signal received... Server shutting down..");
+  if (server) {
+    server.close(() => {
+      process.exit(1);
+    });
+  }
+  process.exit(1);
+});
+
+process.on("SIGINT", (error) => {
+  console.log("SIGINT signal received... Server shutting down..");
+  if (server) {
+    server.close(() => {
+      process.exit(1);
+    });
+  }
+  process.exit(1);
+});
+
+process.on("unhandledRejection", (error) => {
+  console.log("Unhandled Rejection detected... Server shutting down..", error);
+  if (server) {
+    server.close(() => {
+      process.exit(1);
+    });
+  }
+  process.exit(1);
+});
+
+process.on("uncaughtException", (error) => {
+  console.log("Unhandled Exception detected... Server shutting down..", error);
+  if (server) {
+    server.close(() => {
+      process.exit(1);
+    });
+  }
+  process.exit(1);
+});
+
+// Unhandled rejection error
+// Promise.reject(new Error("I forgot to catch this promise"));
+// Uncaught Exception Error
+// throw new Error("I forgot to handle this local error");
+
+/**
+ * unhandled rejection error
+ * uncaught rejection error
+ * signal termination sigterm
+ */
