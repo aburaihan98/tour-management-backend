@@ -1,16 +1,29 @@
-import { User } from "./user.model";
 import catchAsync from "../../utils/catchAsync";
+import { sendResponse } from "../../utils/sendResponse";
+import { userService } from "./user.service";
+import httpStatus from "http-status-codes";
 
 const createUser = catchAsync(async (req, res) => {
-  const { name, email } = req.body;
-  const user = await User.create({ name, email });
-  res.status(200).json({
+  const user = await userService.createUser(req.body);
+  sendResponse(res, {
+    statusCode: httpStatus.CREATED,
     success: true,
-    message: "User registered successfully",
     data: user,
+    message: "User created successfully",
+  });
+});
+
+const getAllUsers = catchAsync(async (req, res) => {
+  const users = await userService.getAllUsers();
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    data: users,
+    message: "Users retrieved successfully",
   });
 });
 
 export const userController = {
   createUser,
+  getAllUsers,
 };
